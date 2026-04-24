@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: crop-advisory-service-config
+  labels:
+    {{- include "crop-advisory-service.labels" . | nindent 4 }}
+data:
+  PORT: {{ .Values.cropAdvisoryService.port | quote }}
+  JWT_ALGORITHM: {{ .Values.jwt.algorithm | quote }}
+  REDIS_HOST: "redis"
+  REDIS_PORT: {{ .Values.redis.port | quote }}
