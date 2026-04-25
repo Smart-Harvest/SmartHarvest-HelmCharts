@@ -9,7 +9,7 @@ imagePullPolicy: IfNotPresent
 
 # ─── Application Services ────────────────────────────────────
 
-frontend:
+frontendService:
   image:
     repository: preethi236/smartcrop
     tag: frontend-v1
