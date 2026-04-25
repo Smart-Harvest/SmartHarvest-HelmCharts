@@ -10,27 +10,32 @@ imagePullPolicy: IfNotPresent
 # ─── Application Services ────────────────────────────────────
 
 frontend:
-  image: preethi236/smartcrop
-  tag: frontend-v1
+  image:
+    repository: preethi236/smartcrop
+    tag: frontend-v1
   port: 80
   replicas: 1
 
 userService:
-  image: preethi236/smartcrop
-  tag: user-v1
+  image:
+    repository: preethi236/smartcrop
+    tag: user-v1
   port: 8001
   replicas: 1
 
 cropAdvisoryService:
-  image: preethi236/smartcrop
-  tag: crop-v1
+  image:
+    repository: preethi236/smartcrop
+    tag: crop-v1
   port: 8002
   replicas: 1
 
 marketplaceService:
-  image: preethi236/smartcrop
-  tag: market-v1
+  image:
+    repository: preethi236/smartcrop
+    tag: market-v1
   port: 8003
+  replicas: 1
   replicas: 1
 
 # ─── Infrastructure ──────────────────────────────────────────
