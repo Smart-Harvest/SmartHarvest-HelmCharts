@@ -31,7 +31,7 @@ services:
     replicaCount: 1
     image:
       repository: preethi236/marketplace-service
-      tag: "dev-latest"
+      tag: "dev-7c1ea25c85f6466c3e07911b6d44ea791ad4bf44"
   frontend-service:
     replicaCount: 1
     image:
