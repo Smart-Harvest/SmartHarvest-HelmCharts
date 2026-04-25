@@ -1,0 +1,145 @@
+# ============================================================
+# SmartHarvest Platform — Global Centralized Values
+# ============================================================
+# Single source of truth. All charts consume this via:
+#   helm install <name> ./microservices/<svc> -f values/values.yaml -f values/values-<env>.yaml
+#
+# CI/CD updates image tags with:
+#   yq -i ".services.<service-name>.image.tag = \"<tag>\"" values/values-<env>.yaml
+# ============================================================
+
+# ─── Global Defaults ─────────────────────────────────────────
+global:
+  imagePullPolicy: Always
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 75
+
+  service:
+    type: ClusterIP
+
+  networkPolicy:
+    enabled: true
+
+  probes:
+    liveness:
+      initialDelaySeconds: 40
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 3
+    readiness:
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 5
+
+# ─── Application Services ────────────────────────────────────
+services:
+  user-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/user-service
+      tag: "v0.0.1"
+    service:
+      port: 8001
+      targetPort: 8001
+    health:
+      path: /health
+
+  crop-advisory-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/crop-advisory-service
+      tag: "v0.0.1"
+    service:
+      port: 8002
+      targetPort: 8002
+    health:
+      path: /health
+
+  marketplace-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/marketplace-service
+      tag: "v0.0.1"
+    service:
+      port: 8003
+      targetPort: 8003
+    health:
+      path: /health
+
+  frontend-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/frontend-service
+      tag: "v0.0.1"
+    service:
+      port: 80
+      targetPort: 80
+    health:
+      path: /
+
+# ─── Infrastructure ──────────────────────────────────────────
+infrastructure:
+  postgres:
+    image:
+      repository: postgres
+      tag: "15-alpine"
+    port: 5432
+    user: postgres
+    password: postgres_password
+    database: agrismart
+    databases:
+      user: userdb
+      crop: cropdb
+      market: marketdb
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+
+  redis:
+    image:
+      repository: redis
+      tag: "7-alpine"
+    port: 6379
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "64Mi"
+      limits:
+        cpu: "200m"
+        memory: "128Mi"
+
+  gateway:
+    className: kgateway
+    controllerName: gateway.envoyproxy.io/gatewayclass-controller
+    listeners:
+      - name: http
+        protocol: HTTP
+        port: 80
+
+# ─── Shared Configuration ────────────────────────────────────
+shared:
+  jwt:
+    secret: your_super_secret_jwt_key_change_in_production
+    algorithm: HS256
+    expiryMinutes: "1440"
+
+  openweather:
+    apiKey: your_openweather_api_key

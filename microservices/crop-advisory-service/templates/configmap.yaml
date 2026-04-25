@@ -1,0 +1,12 @@
+{{- $svc := index .Values.services "crop-advisory-service" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: crop-advisory-service-config
+  labels:
+    {{- include "crop-advisory-service.labels" . | nindent 4 }}
+data:
+  PORT: {{ $svc.service.targetPort | quote }}
+  JWT_ALGORITHM: {{ .Values.shared.jwt.algorithm | quote }}
+  REDIS_HOST: "redis"
+  REDIS_PORT: {{ .Values.infrastructure.redis.port | quote }}

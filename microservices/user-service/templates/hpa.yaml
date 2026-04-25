@@ -1,0 +1,29 @@
+{{- $svc := index .Values.services "user-service" -}}
+{{- if .Values.global.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: user-service
+  labels:
+    {{- include "user-service.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: user-service
+  minReplicas: {{ $svc.autoscaling.minReplicas | default .Values.global.autoscaling.minReplicas }}
+  maxReplicas: {{ $svc.autoscaling.maxReplicas | default .Values.global.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $svc.autoscaling.targetCPUUtilizationPercentage | default .Values.global.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ $svc.autoscaling.targetMemoryUtilizationPercentage | default .Values.global.autoscaling.targetMemoryUtilizationPercentage }}
+{{- end }}

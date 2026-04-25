@@ -1,0 +1,52 @@
+# ============================================================
+# SmartHarvest Platform — Development Environment Overrides
+# ============================================================
+# Namespace: dev
+# Only override what differs from values.yaml
+# CI updates image tags here:
+#   yq -i ".services.<service-name>.image.tag = \"<tag>\"" values/values-dev.yaml
+# ============================================================
+
+global:
+  imagePullPolicy: Always
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
+
+services:
+  user-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/user-service
+      tag: "dev-latest"
+
+  crop-advisory-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/crop-advisory-service
+      tag: "dev-latest"
+
+  marketplace-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/marketplace-service
+      tag: "dev-latest"
+
+  frontend-service:
+    replicaCount: 1
+    image:
+      repository: preethi236/frontend-service
+      tag: "dev-latest"
+
+infrastructure:
+  postgres:
+    password: dev_postgres_password
+
+shared:
+  jwt:
+    secret: dev_jwt_secret_change_me

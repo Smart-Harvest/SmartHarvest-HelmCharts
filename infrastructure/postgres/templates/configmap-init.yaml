@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+data:
+  init.sql: |
+    -- Create databases for each microservice
+    CREATE DATABASE {{ .Values.infrastructure.postgres.databases.user }};
+    CREATE DATABASE {{ .Values.infrastructure.postgres.databases.crop }};
+    CREATE DATABASE {{ .Values.infrastructure.postgres.databases.market }};
+
+    -- Grant privileges
+    GRANT ALL PRIVILEGES ON DATABASE {{ .Values.infrastructure.postgres.databases.user }} TO {{ .Values.infrastructure.postgres.user }};
+    GRANT ALL PRIVILEGES ON DATABASE {{ .Values.infrastructure.postgres.databases.crop }} TO {{ .Values.infrastructure.postgres.user }};
+    GRANT ALL PRIVILEGES ON DATABASE {{ .Values.infrastructure.postgres.databases.market }} TO {{ .Values.infrastructure.postgres.user }};
+
+    \c {{ .Values.infrastructure.postgres.databases.user }}
+    GRANT ALL ON SCHEMA public TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO {{ .Values.infrastructure.postgres.user }};
+
+    \c {{ .Values.infrastructure.postgres.databases.crop }}
+    GRANT ALL ON SCHEMA public TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO {{ .Values.infrastructure.postgres.user }};
+
+    \c {{ .Values.infrastructure.postgres.databases.market }}
+    GRANT ALL ON SCHEMA public TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO {{ .Values.infrastructure.postgres.user }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO {{ .Values.infrastructure.postgres.user }};

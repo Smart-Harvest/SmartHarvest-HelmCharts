@@ -1,0 +1,32 @@
+# ============================================================
+# SmartHarvest — ArgoCD Root Application (App-of-Apps)
+# ============================================================
+# This is the ONLY app you manually create in ArgoCD.
+# It discovers all child apps in argocd-apps/dev/ and argocd-apps/prod/
+# ============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: smartharvest-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: smartharvest
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Smart-Harvest/SmartHarvest-HelmCharts.git
+    targetRevision: HEAD
+    path: argocd-apps
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

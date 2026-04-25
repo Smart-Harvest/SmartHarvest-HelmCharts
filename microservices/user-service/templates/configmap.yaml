@@ -1,0 +1,11 @@
+{{- $svc := index .Values.services "user-service" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-config
+  labels:
+    {{- include "user-service.labels" . | nindent 4 }}
+data:
+  PORT: {{ $svc.service.targetPort | quote }}
+  JWT_ALGORITHM: {{ .Values.shared.jwt.algorithm | quote }}
+  JWT_EXPIRY_MINUTES: {{ .Values.shared.jwt.expiryMinutes | quote }}

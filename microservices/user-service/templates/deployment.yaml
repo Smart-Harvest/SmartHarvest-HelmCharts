@@ -1,0 +1,50 @@
+{{- $svc := index .Values.services "user-service" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    {{- include "user-service.labels" . | nindent 4 }}
+spec:
+  {{- if not (.Values.global.autoscaling.enabled) }}
+  replicas: {{ $svc.replicaCount | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "user-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "user-service.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: user-service
+          image: "{{ $svc.image.repository }}:{{ $svc.image.tag }}"
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ $svc.service.targetPort }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: user-service-config
+            - secretRef:
+                name: user-service-secret
+          livenessProbe:
+            httpGet:
+              path: {{ $svc.health.path | default "/health" }}
+              port: http
+            initialDelaySeconds: {{ .Values.global.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.global.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.global.probes.liveness.timeoutSeconds }}
+            failureThreshold: {{ .Values.global.probes.liveness.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ $svc.health.path | default "/health" }}
+              port: http
+            initialDelaySeconds: {{ .Values.global.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.global.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.global.probes.readiness.timeoutSeconds }}
+            failureThreshold: {{ .Values.global.probes.readiness.failureThreshold }}
+          resources:
+            {{- toYaml ($svc.resources | default .Values.global.resources) | nindent 12 }}

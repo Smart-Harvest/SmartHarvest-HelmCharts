@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-dev
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: smartharvest
+    environment: dev
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Smart-Harvest/SmartHarvest-HelmCharts.git
+    targetRevision: HEAD
+    path: infrastructure/postgres
+    helm:
+      valueFiles:
+        - ../../values/values.yaml
+        - ../../values/values-dev.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

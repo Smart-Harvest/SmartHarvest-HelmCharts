@@ -1,0 +1,9 @@
+{{- $svc := index .Values.services "frontend-service" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+data:
+  NGINX_PORT: {{ $svc.service.targetPort | quote }}

@@ -1,0 +1,75 @@
+# ============================================================
+# SmartHarvest Platform — Production Environment Overrides
+# ============================================================
+# Namespace: prod
+# Only override what differs from values.yaml
+# CI updates image tags here:
+#   yq -i ".services.<service-name>.image.tag = \"<tag>\"" values/values-prod.yaml
+# ============================================================
+
+global:
+  imagePullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 75
+
+services:
+  user-service:
+    replicaCount: 3
+    image:
+      repository: preethi236/user-service
+      tag: "v0.0.1"
+
+  crop-advisory-service:
+    replicaCount: 3
+    image:
+      repository: preethi236/crop-advisory-service
+      tag: "v0.0.1"
+
+  marketplace-service:
+    replicaCount: 3
+    image:
+      repository: preethi236/marketplace-service
+      tag: "v0.0.1"
+
+  frontend-service:
+    replicaCount: 2
+    image:
+      repository: preethi236/frontend-service
+      tag: "v0.0.1"
+
+infrastructure:
+  postgres:
+    password: CHANGE_ME_IN_PRODUCTION
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+
+  redis:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "500m"
+        memory: "256Mi"
+
+shared:
+  jwt:
+    secret: CHANGE_ME_IN_PRODUCTION
