@@ -105,6 +105,10 @@ infrastructure:
       user: userdb
       crop: cropdb
       market: marketdb
+    storage:
+      storageClassName: nfs-client  # change to your StorageClass name
+      size: 5Gi
+      
     resources:
       requests:
         cpu: "100m"

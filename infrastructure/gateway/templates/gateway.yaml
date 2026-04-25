@@ -1,17 +1,19 @@
+# Gateway for dev namespace - uses existing kgateway GatewayClass
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: smartharvest-gateway
+  namespace: smartharvest-dev
   labels:
-    {{- include "gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/name: smartharvest-gateway
+    app.kubernetes.io/part-of: smartharvest
+    environment: dev
 spec:
-  gatewayClassName: {{ .Values.infrastructure.gateway.className }}
+  gatewayClassName: kgateway
   listeners:
-    {{- range .Values.infrastructure.gateway.listeners }}
-    - name: {{ .name }}
-      protocol: {{ .protocol }}
-      port: {{ .port }}
+    - name: http
+      protocol: HTTP
+      port: 80
       allowedRoutes:
         namespaces:
           from: Same
-    {{- end }}

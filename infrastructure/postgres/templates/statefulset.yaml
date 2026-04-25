@@ -1,13 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres
   labels:
     {{- include "postgres.labels" . | nindent 4 }}
 spec:
+  serviceName: postgres
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       {{- include "postgres.selectorLabels" . | nindent 6 }}
@@ -58,8 +57,15 @@ spec:
           resources:
             {{- toYaml (.Values.infrastructure.postgres.resources | default .Values.global.resources) | nindent 12 }}
       volumes:
-        - name: postgres-data
-          emptyDir: {}
         - name: init-scripts
           configMap:
             name: postgres-init
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.infrastructure.postgres.storage.storageClassName | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.infrastructure.postgres.storage.size | quote }}
