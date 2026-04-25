@@ -9,7 +9,6 @@
 
 global:
   imagePullPolicy: Always
-
   resources:
     requests:
       cpu: "50m"
@@ -17,36 +16,30 @@ global:
     limits:
       cpu: "250m"
       memory: "256Mi"
-
 services:
   user-service:
     replicaCount: 1
     image:
       repository: preethi236/user-service
       tag: "dev-latest"
-
   crop-advisory-service:
     replicaCount: 1
     image:
       repository: preethi236/crop-advisory-service
       tag: "dev-latest"
-
   marketplace-service:
     replicaCount: 1
     image:
       repository: preethi236/marketplace-service
       tag: "dev-latest"
-
   frontend-service:
     replicaCount: 1
     image:
       repository: preethi236/frontend-service
-      tag: "dev-latest"
-
+      tag: "dev-d51457cddb288d9d9cbdb6b1db58f77c2ed5488f"
 infrastructure:
   postgres:
     password: dev_postgres_password
-
 shared:
   jwt:
     secret: dev_jwt_secret_change_me
