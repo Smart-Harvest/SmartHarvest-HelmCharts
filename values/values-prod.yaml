@@ -71,5 +71,5 @@ infrastructure:
         memory: "256Mi"
 
 shared:
-  jwt: {}
+  jwt:
     # secret is now managed via SealedSecrets
