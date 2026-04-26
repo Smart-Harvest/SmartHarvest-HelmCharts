@@ -70,6 +70,3 @@ infrastructure:
         cpu: "500m"
         memory: "256Mi"
 
-shared:
-  jwt:
-    # secret is now managed via SealedSecrets
