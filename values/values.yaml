@@ -145,5 +145,5 @@ shared:
     algorithm: HS256
     expiryMinutes: "1440"
 
-  openweather: {}
+  openweather:
     # apiKey is now managed via SealedSecrets
