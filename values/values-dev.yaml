@@ -26,7 +26,7 @@ services:
     replicaCount: 1
     image:
       repository: preethi236/crop-advisory-service
-      tag: "dev-58f1aa2e67419b4e75b4cbca2f20fcc41843a75f"
+      tag: "dev-abe77cf3d257da1a46dc93de8b444ca6aecb2974"
   marketplace-service:
     replicaCount: 1
     image:
