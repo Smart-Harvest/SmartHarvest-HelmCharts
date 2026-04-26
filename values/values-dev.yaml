@@ -21,7 +21,7 @@ services:
     replicaCount: 1
     image:
       repository: preethi236/user-service
-      tag: "dev-168c5f1fac96572bd32992b2c3970fc9ddd0bd9e"
+      tag: "dev-553ad7cc458555b19919ee8dd6abe067345fa555"
   crop-advisory-service:
     replicaCount: 1
     image:
@@ -39,7 +39,7 @@ services:
       tag: "dev-d51457cddb288d9d9cbdb6b1db58f77c2ed5488f"
 infrastructure:
   postgres: {}
-    # password is now managed via SealedSecrets
+  # password is now managed via SealedSecrets
 shared:
   jwt: {}
-    # secret is now managed via SealedSecrets
+  # secret is now managed via SealedSecrets
