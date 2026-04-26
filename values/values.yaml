@@ -99,7 +99,7 @@ infrastructure:
       tag: "15-alpine"
     port: 5432
     user: postgres
-    password: postgres_password
+    # password is now managed via SealedSecrets
     database: agrismart
     databases:
       user: userdb
@@ -141,9 +141,9 @@ infrastructure:
 # ─── Shared Configuration ────────────────────────────────────
 shared:
   jwt:
-    secret: your_super_secret_jwt_key_change_in_production
+    # secret is now managed via SealedSecrets
     algorithm: HS256
     expiryMinutes: "1440"
 
-  openweather:
-    apiKey: your_openweather_api_key
+  openweather: {}
+    # apiKey is now managed via SealedSecrets

@@ -52,7 +52,7 @@ services:
 
 infrastructure:
   postgres:
-    password: CHANGE_ME_IN_PRODUCTION
+    # password is now managed via SealedSecrets
     resources:
       requests:
         cpu: "250m"
@@ -71,5 +71,5 @@ infrastructure:
         memory: "256Mi"
 
 shared:
-  jwt:
-    secret: CHANGE_ME_IN_PRODUCTION
+  jwt: {}
+    # secret is now managed via SealedSecrets

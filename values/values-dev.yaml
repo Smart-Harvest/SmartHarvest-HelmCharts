@@ -38,8 +38,8 @@ services:
       repository: preethi236/frontend-service
       tag: "dev-d51457cddb288d9d9cbdb6b1db58f77c2ed5488f"
 infrastructure:
-  postgres:
-    password: dev_postgres_password
+  postgres: {}
+    # password is now managed via SealedSecrets
 shared:
-  jwt:
-    secret: dev_jwt_secret_change_me
+  jwt: {}
+    # secret is now managed via SealedSecrets
