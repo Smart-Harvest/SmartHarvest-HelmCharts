@@ -36,4 +36,4 @@ services:
     replicaCount: 1
     image:
       repository: preethi236/frontend-service
-      tag: "dev-d51457cddb288d9d9cbdb6b1db58f77c2ed5488f"
+      tag: "dev-85351ddf82a1e59a8fc419c99d26ed2cf36fdbf7"
