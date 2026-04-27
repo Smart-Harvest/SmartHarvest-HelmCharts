@@ -37,7 +37,7 @@ services:
     replicaCount: 3
     image:
       repository: preethi236/marketplace-service
-      tag: "v0.0.1"
+      tag: "v1.0.0"
   frontend-service:
     replicaCount: 2
     image:
