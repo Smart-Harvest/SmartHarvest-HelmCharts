@@ -27,7 +27,7 @@ services:
     replicaCount: 3
     image:
       repository: preethi236/user-service
-      tag: "v1.0.0"
+      tag: "v1.0.1"
   crop-advisory-service:
     replicaCount: 3
     image:
