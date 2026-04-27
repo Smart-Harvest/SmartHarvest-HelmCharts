@@ -21,7 +21,7 @@ services:
     replicaCount: 1
     image:
       repository: preethi236/user-service
-      tag: "dev-acd8830d3dee8a9f008280310618fdb89a4a380e"
+      tag: "dev-e35f817763aa6c90b933b99dfde0608e1818a42e"
   crop-advisory-service:
     replicaCount: 1
     image:
