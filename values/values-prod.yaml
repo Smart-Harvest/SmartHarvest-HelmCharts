@@ -9,7 +9,6 @@
 
 global:
   imagePullPolicy: IfNotPresent
-
   resources:
     requests:
       cpu: "100m"
@@ -17,39 +16,33 @@ global:
     limits:
       cpu: "500m"
       memory: "512Mi"
-
   autoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
     targetMemoryUtilizationPercentage: 75
-
 services:
   user-service:
     replicaCount: 3
     image:
       repository: preethi236/user-service
       tag: "v0.0.1"
-
   crop-advisory-service:
     replicaCount: 3
     image:
       repository: preethi236/crop-advisory-service
       tag: "v0.0.1"
-
   marketplace-service:
     replicaCount: 3
     image:
       repository: preethi236/marketplace-service
       tag: "v0.0.1"
-
   frontend-service:
     replicaCount: 2
     image:
       repository: preethi236/frontend-service
-      tag: "v0.0.1"
-
+      tag: "v1.0.0"
 infrastructure:
   postgres:
     # password is now managed via SealedSecrets
@@ -60,7 +53,6 @@ infrastructure:
       limits:
         cpu: "1000m"
         memory: "1Gi"
-
   redis:
     resources:
       requests:
@@ -69,4 +61,3 @@ infrastructure:
       limits:
         cpu: "500m"
         memory: "256Mi"
-
